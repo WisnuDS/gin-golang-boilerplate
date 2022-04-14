@@ -2,7 +2,6 @@ package dependency
 
 import (
 	"context"
-	"fmt"
 
 	"boilerplate.com/v1/cmd/server"
 	"boilerplate.com/v1/configs"
@@ -20,6 +19,7 @@ func injection(
 	lifecycle fx.Lifecycle,
 	env configs.Env,
 	engine server.Engine,
+	logger configs.Logger,
 ) {
 	lifecycle.Append(fx.Hook{
 		OnStart: func(context.Context) error {
@@ -32,7 +32,7 @@ func injection(
 				engine.Gin.Run(PORT)
 			}()
 
-			fmt.Println("✅ Server is up and running on port:", env.ServerPort)
+			logger.Zap.Info("✅ Server is up and running on port:", env.ServerPort)
 			return nil
 		},
 	})
